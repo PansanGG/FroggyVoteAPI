@@ -1,0 +1,8 @@
+name: FroggyVoteAPI
+version: '${project.version}'
+main: pansangg.froggyvoteapi.Main
+api-version: '1.13'
+prefix: FroggyMonitor
+authors: [PansanGG_]
+description: API for FroggyMonitor votes
+website: https://froggymonitor.ru
