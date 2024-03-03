@@ -9,7 +9,8 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class FormDataHandler implements HttpHandler {
     @Override
@@ -61,5 +62,5 @@ public abstract class FormDataHandler implements HttpHandler {
         }
     }
 
-    public abstract void handle(HttpExchange httpExchange,Map<String,Object> parts,String data) throws IOException;
+    public abstract void handle(HttpExchange httpExchange, Map<String, Object> parts, String data) throws IOException;
 }

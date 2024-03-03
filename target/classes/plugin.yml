@@ -1,5 +1,5 @@
 name: FroggyVoteAPI
-version: '${project.version}'
+version: '1.0'
 main: pansangg.froggyvoteapi.Main
 api-version: '1.13'
 prefix: FroggyMonitor

@@ -1,0 +1,29 @@
+site_port: 8080            # Порт сайта
+site_host: "localhost"     # Хост сайта
+site_max_connections: 5    # Макс. количество подключений на сайт
+
+bind_url_comment: "/api/comment" # URL на сайте для привязки поощрения за отзыв
+bind_url_vote: "/api/vote"       # URL на сайте для привязки поощрения за голос
+
+add_comment: # Добавление комментария
+  message: "Вы добавили комментарий, и за это получили награду!" # Сообщение
+  action:
+    type: command  # Тип действия (command/vault)
+    amount: 10 # Если ваулт
+    command: "/say choto" # Если команда
+del_comment: # Удаление комментария
+  message: "нах убрал комментарий пидорас" # Сообщение
+  action:
+    type: command # Тип действия (command/vault)
+    amount: -10 # Если ваулт
+    command: "/say choto" # Если команда
+vote: # Голос за сервер
+  message: "Вы проголосовали за сервер! В качестве благодарности, вы получили большую награду!" # Сообщение
+  action:
+    type: command # Тип действия (command/vault)
+    amount: 20 # Если ваулт
+    command: "/say choto" # Если команда
+
+# plugin by PansanGG_
+# mixray paid 5$ for plugin
+# waiting when camper lick mixrays heels nutello

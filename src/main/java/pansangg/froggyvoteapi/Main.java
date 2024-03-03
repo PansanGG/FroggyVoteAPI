@@ -1,66 +1,42 @@
 package pansangg.froggyvoteapi;
 
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import pansangg.froggyvoteapi.utils.MapBuilder;
+import pansangg.froggyvoteapi.site.SitePart;
 import pansangg.froggyvoteapi.utils.Config;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 
 public final class Main extends JavaPlugin {
 
-    public static Config conf;
+    public static HashMap<String, Object> conf;
     public static Main me;
+    public static SitePart site;
+    public static Economy economy = null;
 
     @Override
     public void onEnable() {
-        conf = new Config(
-                Paths.get(getDataFolder().getPath(), "config.yml").toFile(),
-                new MapBuilder<String, Object>()
-                        .put("site_host", "localhost")
-                        .put("site_port", 8080)
-                        .put("bind_url_comment", "/api/comment")
-                        .put("bind_url_vote", "/api/vote")
-                        .put(
-                                "add_comment",
-                                new MapBuilder<String, Object>()
-                                        .put("message", "Вы оставили комментарий, и получили за это награду!")
-                                        .put(
-                                            "action", new MapBuilder<String, Object>()
-                                                .put("type", "command/vault")
-                                                .put("command", "/say NICKNAME прокомментировал сервер, нам (не) важно ваше мнение!")
-                                                .put("amount", "8")
-                                        )
-                        )
-                        .put(
-                                "del_comment",
-                                new MapBuilder<String, Object>()
-                                        .put("message", "Вы убрали комментарий, и ваша награда была отозвана!")
-                                        .put(
-                                                "action", new MapBuilder<String, Object>()
-                                                        .put("type", "command/vault")
-                                                        .put("command", "/say NICKNAME убрал комментарий :(")
-                                                        .put("amount", "-8")
-                                        )
-                        )
-                        .put(
-                                "vote",
-                                new MapBuilder<String, Object>()
-                                        .put("message", "Вы проголосовали за сервер, и получили за это БОЛЬШУЮ награду!")
-                                        .put(
-                                                "action", new MapBuilder<String, Object>()
-                                                        .put("type", "command/vault")
-                                                        .put("command", "/say Спасибо за голос, NICKNAME!")
-                                                        .put("amount", "16")
-                                        )
-                        )
-                        .toMap());
         me = this;
+
+        saveResource("config.yml", false);
+        conf = new Config(Paths.get(getDataFolder().getPath(), "config.yml").toFile(), new HashMap<>());
+
+        site = new SitePart((String) conf.get("site_host"), (Integer) conf.get("site_port"));
+
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            getLogger().warning("Плагин отключен в связи с отсутствием плагина Vault! / Plugin disabled due to lack of Vault plugin");
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+            economy = rsp.getProvider();
+            getLogger().info("Vault успешно подключен! / Vault was successfully connected!");
+        }
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        site.server.stop(1);
     }
 }
